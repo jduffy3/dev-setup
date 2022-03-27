@@ -10,11 +10,7 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/james/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-1. Install command line tools
-
-xcode-select --install
-
-2. Install ansible
+1. Install ansible
 
 ```bash
 python3 -m pip install --upgrade pip
@@ -23,7 +19,7 @@ python3 -m pip install --user ansible
 ./Library/Python/3.8/bin/ansible-galaxy collection install community.general
 ```
 
-3. Setup key
+2. Setup key
 
 ```bash
 ssh-keygen -t ed25519 -C "user@email.com"
@@ -37,14 +33,12 @@ Host *
   UseKeychain yes
   IdentityFile ~/.ssh/id_ed25519
 EOF
-```
 
 ssh-add -K ~/.ssh/id_ed25519
-
 pbcopy < ~/.ssh/id_ed25519.pub
+```
 
-Setup ssh keys
-	https://github.com/settings/keys
+Setup ssh keys https://github.com/settings/keys
 
 ## Run playbook
 
