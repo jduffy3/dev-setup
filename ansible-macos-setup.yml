@@ -3,73 +3,31 @@
   hosts: localhost
   become: false
   vars:
-    brew_cask_packages:
-      - atom
-      - docker
-      - firefox
-      - google-chrome
-      - slack
-      - spotify
-      - visual-studio-code
-    brew_packages:
-      - docker-compose
-      - git
-      - jq
-      - pyenv
-      - python
-      - rbenv
-      - tree
-      - wget
-      - zsh
-      - zsh-syntax-highlighting
-    install_homebrew_if_missing: false
-    upgrade_homebrew_packages: false
-
   pre_tasks:
-    - name: Setup Developer dir
+    - name: check Developer dir
+      stat:
+        path: ~/Developer
+      register: developer_dir
+    - name: has oh-my-zsh
+      stat:
+        path: ~/.oh-my-zsh
+      register: has_oh_my_zsh
+    - name: create Developer dir
       shell: mkdir ~/Developer
+      when: developer_dir.stat.exists == false
     - name: Check Homebrew is installed
       stat:
         path: /opt/homebrew/bin/brew
       register: homebrew_check
-    - name: Fail if Homebrew is not installed and install_homebrew_if_missing Is False
+    - name: Fail if Homebrew is not installed
       fail:
         msg: Homebrew is missing...Install from http://brew.sh/
-      when:
-        - not homebrew_check.stat.exists
-        - not install_homebrew_if_missing
-
-    - name: Installing Homebrew
-      shell: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-      when:
-        - not homebrew_check.stat.exists
-        - install_homebrew_if_missing
-
+      when: not homebrew_check.stat.exists
   tasks:
-    - name: Updating Homebrew
-      homebrew:
-        update_homebrew: true
-      when: homebrew_check.stat.exists
-
-    - name: Upgrading Homebrew Packages
-      homebrew:
-        upgrade_all: "{{ upgrade_homebrew_packages }}"
-      register: result
-      until: result is successful
-      when: homebrew_check.stat.exists
-
-    - name: Installing Homebrew Cask Packages
-      homebrew_cask:
-        name: "{{ brew_cask_packages }}"
-        state: present
-      register: result
-      until: result is successful
-      when: homebrew_check.stat.exists
-
-    - name: Installing Homebrew Packages
-      homebrew:
-        name: "{{ brew_packages }}"
-        state: present
-      register: result
-      until: result is successful
-      when: homebrew_check.stat.exists
+    - name: install oh-my-zsh
+      shell: curl -L https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh
+      when: has_oh_my_zsh.stat.exists == false
+    - name: install vim-plug
+      shell: curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    - include_tasks: tasks/brew.yml
+    - include_tasks: tasks/git.yml
