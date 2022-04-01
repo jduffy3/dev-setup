@@ -21,3 +21,5 @@
       - rbenv
       - tree
       - wget
+      - figlet
+
