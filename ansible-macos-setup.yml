@@ -36,3 +36,11 @@
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
     - include_tasks: tasks/brew.yml
     - include_tasks: tasks/git.yml
+  post_tasks:
+    - name: .dotfiles exists
+      stat:
+        path: "{{ ansible_env.HOME }}/.dotfiles"
+      register: dotfiles_check
+    - name: stow .dotfiles
+      shell: stow -t $HOME -d $HOME/.dotfiles .
+      when: dotfiles_check.stat.exists
