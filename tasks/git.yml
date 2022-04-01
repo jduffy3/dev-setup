@@ -1,0 +1,5 @@
+    - name: .dotfiles
+      ansible.builtin.git:
+        repo: git@github.com:jduffy3/.dotfiles.git
+        dest: $HOME/.dotfiles
+

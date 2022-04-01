@@ -1,0 +1,21 @@
+    brew_cask_packages:
+      - slack
+      - atom
+      - docker
+      - firefox
+      - google-chrome
+      - slack
+      - spotify
+      - visual-studio-code
+    brew_packages:
+      - tmux
+      - fzf
+      - stow
+      - docker-compose
+      - git
+      - jq
+      - pyenv
+      - python
+      - rbenv
+      - tree
+      - wget
