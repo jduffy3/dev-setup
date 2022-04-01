@@ -8,6 +8,7 @@
       - spotify
       - visual-studio-code
     brew_packages:
+      - go
       - tmux
       - fzf
       - stow

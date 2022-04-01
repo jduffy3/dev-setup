@@ -1,20 +1,9 @@
 ---
-- name: Install MacOS Packages
+- name: Setup MacOS
   hosts: localhost
   become: false
   vars:
   pre_tasks:
-    - name: check Developer dir
-      stat:
-        path: ~/Developer
-      register: developer_dir
-    - name: has oh-my-zsh
-      stat:
-        path: ~/.oh-my-zsh
-      register: has_oh_my_zsh
-    - name: create Developer dir
-      shell: mkdir ~/Developer
-      when: developer_dir.stat.exists == false
     - name: Check Homebrew is installed
       stat:
         path: /opt/homebrew/bin/brew
@@ -23,6 +12,17 @@
       fail:
         msg: Homebrew is missing...Install from http://brew.sh/
       when: not homebrew_check.stat.exists
+    - name: Developer dir exists
+      stat:
+        path: ~/Developer
+      register: developer_dir
+    - name: create Developer dir
+      shell: mkdir ~/Developer
+      when: developer_dir.stat.exists == false
+    - name: has oh-my-zsh
+      stat:
+        path: ~/.oh-my-zsh
+      register: has_oh_my_zsh
   tasks:
     - name: install oh-my-zsh
       shell: curl -L https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh
