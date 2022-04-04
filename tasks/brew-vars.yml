@@ -22,4 +22,5 @@
       - tree
       - wget
       - figlet
+      - yarn
 
