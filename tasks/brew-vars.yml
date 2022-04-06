@@ -1,4 +1,5 @@
     brew_cask_packages:
+      - pop
       - zoom
       - slack
       - atom
