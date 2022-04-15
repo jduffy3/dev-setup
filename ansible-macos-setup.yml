@@ -36,6 +36,7 @@
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
     - include_tasks: tasks/brew.yml
     - include_tasks: tasks/git.yml
+    - include_tasks: tasks/go.yml
   post_tasks:
     - name: .dotfiles exists
       stat:

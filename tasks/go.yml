@@ -1,0 +1,16 @@
+    - name: Check GO home
+      stat:
+        path: $HOME/go
+      register: go_check
+    - name: Set GO home
+      shell: mkdir -p ~/go/{src/github.com,bin,pkg}
+      when: not go_check.stat.exists
+
+    - name: Installing go from Homebrew 
+      homebrew:
+        name: "go"
+        state: present
+      register: result
+      until: result is successful
+      when: homebrew_check.stat.exists
+
