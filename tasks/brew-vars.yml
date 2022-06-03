@@ -9,6 +9,7 @@
       - slack
       - spotify
       - visual-studio-code
+      - intellij-idea
     brew_packages:
       - tmux
       - fzf
@@ -23,4 +24,5 @@
       - wget
       - figlet
       - yarn
+      - openjdk@11
 
