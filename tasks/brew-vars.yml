@@ -25,4 +25,5 @@
       - figlet
       - yarn
       - openjdk@11
+      - python
 
