@@ -1,0 +1,7 @@
+    - name: has oh-my-zsh
+      stat:
+        path: ~/.oh-my-zsh
+      register: has_oh_my_zsh
+    - name: install oh-my-zsh
+      shell: curl -L https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sh
+      when: has_oh_my_zsh.stat.exists == false

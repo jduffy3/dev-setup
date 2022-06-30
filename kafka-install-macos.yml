@@ -1,0 +1,14 @@
+---
+- name: Install Kafka
+  hosts: localhost
+  become: false
+  pre_tasks:
+    - include_tasks: tasks/homebrew-exists.yml
+  tasks:
+    - name: Installing Homebrew Packages
+      homebrew:
+        name: kafka
+        state: present
+      register: result
+      until: result is successful
+      when: homebrew_check.stat.exists
