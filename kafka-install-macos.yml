@@ -7,7 +7,11 @@
   tasks:
     - name: Installing Homebrew Packages
       homebrew:
-        name: kafka
+        name:
+          - kafka
+          - librdkafka
+          - pkg-config
+          - openssl
         state: present
       register: result
       until: result is successful
