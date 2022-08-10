@@ -14,3 +14,5 @@
       until: result is successful
       when: homebrew_check.stat.exists
 
+    - name: install gopls
+      shell: go install golang.org/x/tools/gopls@latest
