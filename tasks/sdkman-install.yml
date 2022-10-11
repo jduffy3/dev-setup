@@ -1,0 +1,9 @@
+    - name: has sdkman
+      stat:
+        path: ~/.sdkman/bin/sdkman-init.sh
+      register: has_sdkman
+    - name: install sdkman
+      shell: |
+        curl -L https://get.sdkman.io | sh
+        source ~/.sdkman/bin/sdkman-init.sh
+      when: has_sdkman.stat.exists == false
