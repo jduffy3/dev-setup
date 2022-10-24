@@ -20,7 +20,10 @@
     - name: Installing Homebrew Packages
       homebrew:
         name:
+        - postgresql
+        - gh
         - tmux
+        - telnet
         - fzf
         - stow
         - docker-compose
