@@ -1,0 +1,4 @@
+- name: Install ruby-lsp latest
+  community.general.gem:
+    name: ruby-lsp
+    state: latest

@@ -4,7 +4,7 @@
   become: false
   vars:
   pre_tasks:
-    - include_tasks: tasks/homebrew-exists.yml
+    - include_tasks: tasks/require-homebrew.yml
     - include_tasks: tasks/ohmyzsh-install.yml
     - include_tasks: tasks/sdkman-install.yml
     - name: Developer dir exists
@@ -35,6 +35,8 @@
     - include_tasks: tasks/brew-heroku.yml
     - include_tasks: tasks/git.yml
     - include_tasks: tasks/go.yml
+    - include_tasks: tasks/ruby-gems.yml
+    - include_tasks: tasks/npm.yml
   post_tasks:
     - name: .dotfiles exists
       stat:
