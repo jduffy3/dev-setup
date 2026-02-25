@@ -6,7 +6,6 @@
   pre_tasks:
     - include_tasks: tasks/require-homebrew.yml
     - include_tasks: tasks/ohmyzsh-install.yml
-    - include_tasks: tasks/sdkman-install.yml
     - name: Developer dir exists
       stat:
         path: ~/Developer
@@ -32,11 +31,8 @@
       args:
         creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
     - include_tasks: tasks/brew-dev-env.yml
-    - include_tasks: tasks/brew-heroku.yml
     - include_tasks: tasks/git.yml
-    - include_tasks: tasks/go.yml
     - include_tasks: tasks/ruby-gems.yml
-    - include_tasks: tasks/npm.yml
   post_tasks:
     - name: .dotfiles exists
       stat:

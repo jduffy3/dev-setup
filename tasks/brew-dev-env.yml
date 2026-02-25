@@ -4,7 +4,6 @@
         - pop
         - zoom
         - slack
-        - atom
         - docker
         - firefox
         - google-chrome
@@ -20,10 +19,13 @@
     - name: Installing Homebrew Packages
       homebrew:
         name:
+        - libyaml
+        - asdf
         - postgresql
         - gh
         - tmux
         - telnet
+        - fd
         - fzf
         - stow
         - docker-compose
@@ -33,10 +35,13 @@
         - python
         - rbenv
         - tree
+        - tree-sitter-cli
+        - prettier
         - wget
         - figlet
         - yarn
-        - neovim
+        - luarocks
+        - nvim
         state: present
       register: result
       until: result is successful
