@@ -1,7 +1,7 @@
     - name: Installing Homebrew Cask Packages
       homebrew_cask:
         name:
-        - aerospace
+        - nikitabobko/tap/aerospace
         - claude-code
         - ghostty
         - pop-app
