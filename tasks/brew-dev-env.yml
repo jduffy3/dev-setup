@@ -5,9 +5,8 @@
         - claude-code
         - ghostty
         - pop-app
-        - zoom
-        - slack
         - docker
+        - docker-desktop
         - firefox
         - google-chrome
         - slack

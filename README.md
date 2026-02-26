@@ -18,4 +18,4 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 4. Run playbook
 
-`ansible-playbook ansible-macos-setup.yml`
+`ansible-playbook ansible-macos-setup.yml -K`
