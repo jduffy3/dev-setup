@@ -1,7 +1,10 @@
     - name: Installing Homebrew Cask Packages
       homebrew_cask:
         name:
-        - pop
+        - aerospace
+        - claude-code
+        - ghostty
+        - pop-app
         - zoom
         - slack
         - docker
@@ -19,8 +22,10 @@
     - name: Installing Homebrew Packages
       homebrew:
         name:
+        - ripgrep
         - libyaml
         - asdf
+        - bat
         - postgresql
         - gh
         - tmux
@@ -31,9 +36,8 @@
         - docker-compose
         - git
         - jq
-        - pyenv
-        - python
-        - rbenv
+        - opencode
+        - sqlite
         - tree
         - tree-sitter-cli
         - prettier
@@ -41,7 +45,7 @@
         - figlet
         - yarn
         - luarocks
-        - nvim
+        - neovim
         state: present
       register: result
       until: result is successful
