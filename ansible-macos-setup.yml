@@ -3,7 +3,31 @@
   hosts: localhost
   become: false
   vars:
+    homebrew_privileged_password: "{{ ansible_become_pass | default(lookup('env', 'HOMEBREW_CASK_PASSWORD', default=''), true) }}"
   pre_tasks:
+    - name: Prompt for privileged password when missing
+      ansible.builtin.pause:
+        prompt: "Password for installing privileged Homebrew casks:"
+        echo: false
+      register: homebrew_privileged_password_prompt
+      when: homebrew_privileged_password | length == 0
+      run_once: true
+      no_log: true
+
+    - name: Capture privileged password from prompt
+      ansible.builtin.set_fact:
+        homebrew_privileged_password: "{{ homebrew_privileged_password_prompt.user_input }}"
+      when:
+        - homebrew_privileged_password | length == 0
+        - homebrew_privileged_password_prompt is defined
+      no_log: true
+
+    - name: Ensure privileged password available
+      fail:
+        msg: >-
+          Some casks needs sudo. Provide your password when prompted or
+          set HOMEBREW_CASK_PASSWORD for non-interactive runs.
+      when: homebrew_privileged_password | length == 0
     - include_tasks: tasks/require-homebrew.yml
     - include_tasks: tasks/ohmyzsh-install.yml
     - name: Developer dir exists
@@ -16,13 +40,20 @@
   tasks:
     - include_tasks: tasks/brew-dev-env.yml
     - include_tasks: tasks/git.yml
-    - include_tasks: tasks/ruby-gems.yml
   post_tasks:
     - name: .dotfiles exists
       stat:
-        path: "{{ ansible_env.HOME }}/.dotfiles"
+        path: "{{ ansible_facts['env']['HOME'] }}/jduffy3/.dotfiles"
       register: dotfiles_check
-    - name: stow .dotfiles
-      shell: stow -t $HOME -d $HOME/.dotfiles .
+    - name: Stow dotfiles
       when: dotfiles_check.stat.exists
-
+      block:
+        - name: stow .dotfiles
+          shell: stow -t $HOME -d $HOME/jduffy3/.dotfiles .
+          register: stow_result
+      rescue:
+        - name: Warn about existing dotfiles
+          debug:
+            msg: >-
+              Skipped stow because files already exist. Resolve manually (move into .backup dir)
+              Original error: {{ stow_result.stderr | default('unknown error') }}

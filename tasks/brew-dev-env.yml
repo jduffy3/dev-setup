@@ -14,6 +14,8 @@
         - visual-studio-code
         - intellij-idea
         state: present
+        sudo_password: "{{ homebrew_privileged_password }}"
+        accept_external_apps: true
       register: result
       until: result is successful
       when: homebrew_check.stat.exists

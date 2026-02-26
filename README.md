@@ -18,4 +18,6 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 4. Run playbook
 
-`ansible-playbook ansible-macos-setup.yml -K`
+`ansible-playbook ansible-macos-setup.yml`
+
+Early in the run the playbook prompts once for your macOS password so Docker Desktop (installed via Homebrew Cask) can run its privileged post-install steps. If you do **not** want an interactive prompt, export `HOMEBREW_CASK_PASSWORD` with the same password before running Ansible.
