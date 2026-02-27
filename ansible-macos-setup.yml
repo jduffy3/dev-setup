@@ -3,6 +3,9 @@
   hosts: localhost
   become: false
   vars:
+    home_dir: "{{ lookup('env', 'HOME') }}"
+    dotfiles_dir: "{{ home_dir }}/Developer/jduffy3/.dotfiles"
+    dotfiles_backup_dir: "{{ home_dir }}/.dotfiles_backup"
     homebrew_privileged_password: "{{ ansible_become_pass | default(lookup('env', 'HOMEBREW_CASK_PASSWORD', default=''), true) }}"
   pre_tasks:
     - name: Prompt for privileged password when missing
@@ -25,17 +28,17 @@
     - name: Ensure privileged password available
       fail:
         msg: >-
-          Some casks needs sudo. Provide your password when prompted or
+          Some casks need sudo. Provide your password when prompted or
           set HOMEBREW_CASK_PASSWORD for non-interactive runs.
       when: homebrew_privileged_password | length == 0
     - include_tasks: tasks/require-homebrew.yml
     - include_tasks: tasks/ohmyzsh-install.yml
     - name: Developer dir exists
       stat:
-        path: ~/Developer
+        path: "{{ home_dir }}/Developer"
       register: developer_dir
     - name: create Developer dir
-      shell: mkdir ~/Developer
+      shell: mkdir "{{ home_dir }}/Developer"
       when: developer_dir.stat.exists == false
   tasks:
     - include_tasks: tasks/brew-dev-env.yml
@@ -43,13 +46,14 @@
   post_tasks:
     - name: .dotfiles exists
       stat:
-        path: "{{ ansible_facts['env']['HOME'] }}/jduffy3/.dotfiles"
+        path: "{{ dotfiles_dir }}"
       register: dotfiles_check
     - name: Stow dotfiles
       when: dotfiles_check.stat.exists
       block:
         - name: stow .dotfiles
-          shell: stow -t $HOME -d $HOME/jduffy3/.dotfiles .
+          ansible.builtin.shell: |
+            stow -t "{{ home_dir }}" -d "{{ dotfiles_dir }}" .
           register: stow_result
       rescue:
         - name: Warn about existing dotfiles
