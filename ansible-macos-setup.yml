@@ -53,7 +53,7 @@
       block:
         - name: stow .dotfiles
           ansible.builtin.shell: |
-            stow -t "{{ home_dir }}" -d "{{ dotfiles_dir }}" .
+            stow --dotfiles -t "{{ home_dir }}" -d "{{ dotfiles_dir }}" .
           register: stow_result
       rescue:
         - name: Warn about existing dotfiles
